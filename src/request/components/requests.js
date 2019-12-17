@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import RequestInput from './requestInput'
 import RequestShow from './requestShow'
 import { getRequest, createNewRequest, deleteRequestById, updateRequestById } from '../api'
+import {createNewReview} from '../../review/api'
 export default class requests extends Component {
   constructor(props) {
     super()
@@ -15,16 +16,17 @@ export default class requests extends Component {
       },
       user_token: '',
       action: '',
-      id: ''
     }
   }
 
   componentDidMount = () => {
     this.setState({
       user_token: this.props.user.token
-    }, () => {
+    }, () => this.getAllRequests())
+  }
 
-      getRequest(this.state.user_token)
+  getAllRequests =()=> {
+     getRequest(this.state.user_token)
         .then((response) => {
           this.setState({
             requests: response.data.requests
@@ -33,15 +35,13 @@ export default class requests extends Component {
         .catch((error) => {
           console.log(error)
         })
-    })
   }
 
   renderForm = (action, request) => {
-    
+    console.log(request)
     if (action === 'update') {
       this.setState({
         action: 'update',
-        id: request._id,
         request: request
       })
     } else {
@@ -78,16 +78,9 @@ export default class requests extends Component {
           updateRequestById(this.state.user_token, id, this.state.request)
             .then((response) => {
               console.log(response.data)
-              const updateRequest = this.state.requests.map(request => {
-                if (request._id === id) {
-                  return this.state.request
-                } else {
-                  return request
-                }
-              })
+              this.getAllRequests()
               this.setState({
                 action: '',
-                requests: updateRequest
               })
             }); break;
 
@@ -118,23 +111,38 @@ export default class requests extends Component {
     })
   }
 
+  newReview =(request) =>{
+      createNewReview(this.state.user_token, request._id)
+      .then(response =>{
+        console.log(response.data)
+      })
+      .catch(error =>{
+        console.log(error)
+      })
+  }
+
   render() {
     let allRequest = <h1>You don't have any request</h1>
 
     if (this.state.requests.length > 0) {
       allRequest = this.state.requests.map(request => {
-        return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} request={request} key={request._id} />
+        return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} action={this.state.action} user_id={this.props.user._id} request={request} key={request._id} />
       })
     }
-    console.log(allRequest)
+    console.log(this.props.user)
     return (
-      <div>
+      <div >
+         {(this.props.user.role.title !== "shopper")?
+         (this.state.action ==="") ?<button onClick={this.renderForm}>New Request</button>: false
+        : false}
+        <div className="row request-row">
         {(this.state.action === 'create' || this.state.action === 'update')
-          ? <RequestInput request={this.state.request} id={this.state.id} setRequest={this.setRequest} />
+          ? <RequestInput request={this.state.request}  setRequest={this.setRequest} />
           : (this.state.action === "show")
-          ? <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} request={this.state.request} key={this.state.id} /> 
-          : <div> {allRequest}  <button onClick={this.renderForm}>New Request</button> </div>
+          ? <RequestShow renderForm={this.renderForm} action={this.state.action} newReview={this.newReview} setRequest={this.setRequest} user_id={this.props.user._id} request={this.state.request} key={this.state.id} /> 
+          : allRequest
         }
+      </div>
       </div>
     )
   }
