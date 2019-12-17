@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Alert from 'react-bootstrap/Alert'
+// import Alert from 'react-bootstrap/Alert'
 
-class AlertDismissible extends React.Component {
+class AlertDismissible extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -12,12 +12,17 @@ class AlertDismissible extends React.Component {
     render() {
       const handleDismiss = () => this.setState({ show: false });
       if (this.state.show) {
+        let className ;
+        switch (this.props.variant){
+
+          case 'success':   className = 'flash-success';break;
+          case 'danger':  className = 'flash-error';break;
+          default: className = 'flash-warning'; 
+        }
         return (
-            <Alert key={this.props.index} dismissible variant={this.props.variant} onClose={handleDismiss}>
-                <Alert.Heading>
+            <alert className = { `${className} animated`} key={this.props.index}  variant={this.props.variant} onClose={handleDismiss}>
                     {this.props.message}
-                </Alert.Heading>
-            </Alert>
+            </alert>
         )
       } else {
         return <React.Fragment/>
