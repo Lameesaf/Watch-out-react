@@ -49,12 +49,14 @@ export default class requestInput extends Component {
         days.push(key)
       }
     }
+
     this.setState({ request: { ...this.state.request, days: days } },
-      () => this.props.setRequest(this.state.action, this.props.id, this.state.request))
+      () => this.props.setRequest(this.state.action, this.props.request._id, this.state.request))
   }
 
   componentDidMount = () => {
-    if (this.props.id === '') {
+    console.log(this.props.request._id)
+    if (!this.props.request._id) {
       this.setState({
         action: 'create'
 
@@ -74,7 +76,7 @@ export default class requestInput extends Component {
         for (let key in this.state.week) {
           if (this.state.request.days.includes(key)) {
             week = { ...week, [key]: true }
-          }else {
+          } else {
             week = { ...week, [key]: false }
           }
         }
@@ -101,43 +103,68 @@ export default class requestInput extends Component {
         <form className='auth-form' onSubmit={this.onChange}>
           <h3>New Request</h3>
 
-          <label htmlFor="name">Shop Name</label>
-          <input required name="shop_name" value={request.shop_name} type="text" placeholder="shop name"
+          <label  htmlFor="name">Shop Name</label>
+          <input className="col col-xs-4 col-xl-4" required name="shop_name" value={request.shop_name} placeholder="shop name"
             onChange={this.handleChange} />
 
           <label htmlFor="shift">What Shift?</label>
-          <label><input type="radio" value="morning" checked={checked} name="morning" onChange={this.shiftChangeHandle} /> Morning</label>
-          <label><input type="radio" value="evening" checked={!checked} name="evening" onChange={this.shiftChangeHandle} /> Evening</label>
+          <ul className={"list-inline"}>
+            <li>
+              <label><input type="radio" value="morning" checked={checked} name="morning" onChange={this.shiftChangeHandle} /> Morning</label>
+            </li>
+            <li>
+              <label><input type="radio" value="evening" checked={!checked} name="evening" onChange={this.shiftChangeHandle} /> Evening</label>
+            </li></ul>
+          <ul className={"list-inline"}>
+            <li>
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={sun} name="sun" value="sunday"
+                  onClick={(e) => this.onChangeDays(e)} /> Sunday
+            </label>
+            </li>
+            <li>
 
-          <label>
-            <input type="checkbox" checked={sun} name="sun" value="sunday"
-              onClick={(e) => this.onChangeDays(e)} /> Sunday
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={mon} name="mon" value="Monday"
+                  onClick={this.onChangeDays} /> Monday
             </label>
-          <label>
-            <input type="checkbox" checked={mon} name="mon" value="Monday"
-              onClick={this.onChangeDays} /> Monday
-            </label>
-          <label>
-            <input type="checkbox" checked={tue} name="tue" value="Tuesday"
-              onClick={this.onChangeDays} /> Tuesday
-            </label>
-          <label>
-            <input type="checkbox" checked={wed} name="wed" value="Wednesday"
-              onClick={this.onChangeDays} /> Wednesday
-            </label>
-          <label>
-            <input type="checkbox" checked={thu} name="thu" value="Thursday"
-              onClick={this.onChangeDays} /> Thursday
-            </label>
-          <label>
-            <input type="checkbox" checked={fri} name="fri" value="Friday"
-              onClick={this.onChangeDays} /> Friday
-            </label>
-          <label>
-            <input type="checkbox" checked={sat} name="sat" value="Saturday"
-              onClick={this.onChangeDays} /> Saturday
-            </label>
+            </li>
+            <li>
 
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={tue} name="tue" value="Tuesday"
+                  onClick={this.onChangeDays} /> Tuesday
+            </label>
+            </li>
+            <li>
+
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={wed} name="wed" value="Wednesday"
+                  onClick={this.onChangeDays} /> Wednesday
+            </label>
+            </li>
+            <li>
+
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={thu} name="thu" value="Thursday"
+                  onClick={this.onChangeDays} /> Thursday
+            </label>
+            </li>
+            <li>
+
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={fri} name="fri" value="Friday"
+                  onClick={this.onChangeDays} /> Friday
+            </label>
+            </li>
+            <li>
+
+              <label className={"checkbox"}>
+                <input type="checkbox" checked={sat} name="sat" value="Saturday"
+                  onClick={this.onChangeDays} /> Saturday
+            </label>
+            </li>
+          </ul>
           <label htmlFor="name">Details</label>
           <textarea required name="details" value={request.details} type="text" placeholder="request details"
             onChange={this.handleChange} />
@@ -146,7 +173,7 @@ export default class requestInput extends Component {
 
 
 
-    <button type="submit">{ (this.state.action ==='create')? "Create" : "Update"}</button>
+          <button type="submit">{(this.state.action === 'create') ? "Create" : "Update"}</button>
         </form>
       </div>
     )
