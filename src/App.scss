@@ -1,8 +1,33 @@
-$success: #c7f282;
-$warning: #f1e681;
-$error: #f08181;
-$charcoal: #ccc;
+$success: rgba(199, 242, 130, 0.698);
+$warning: rgba(241, 230, 131, 0.698);
+$error: rgba(240, 127, 127, 0.698);
+$charcoal: rgba(204, 204, 204, 0.698);
 
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+.animated {
+  -webkit-animation-duration: 5s;
+  animation-duration: 5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 .flash-success,
 .flash-warning,
 .flash-error {
@@ -15,6 +40,8 @@ $charcoal: #ccc;
   top: 15%;
   width: 50%;
   z-index: 1;
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
 }
 
 .flash-success {
@@ -45,4 +72,36 @@ $charcoal: #ccc;
     align-self: flex-end;
     max-width: 200px;
   }
+}
+
+.card {
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.5);
+  border: 10px solid #072E44;
+  padding: 4px 0;
+  margin: 4px;
+  width: 32%;
+  text-align: center;
+  color: #ffffff;
+  background-color: #235f80;
+}
+
+.review {
+  border: 10px solid #339cb5;
+  background-color: #ffffff;
+  color: #072E44;
+
+}
+
+.container, .request-row {
+  padding: 0;
+  margin: 30px auto;
+  justify-items: center;
+}
+
+button {
+  background-color: #072E44;
+  color: #ffffff;
+  border: 1px solid #072E44;
+  margin: 5px;
+  padding: 5px;
 }
