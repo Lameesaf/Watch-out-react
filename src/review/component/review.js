@@ -12,25 +12,34 @@ export default class reviews extends Component {
         content: '', },
       user_token: '',
       action: '',
-      id: ''
+      id: '',
+      showClassName:""
     }
   }
 
   componentDidMount = () => {
     this.setState({
-      user_token: this.props.user.token
+      user_token: this.props.user.token,
+      action: this.props.action,
+      showClassName: this.props.showClassName
     }, () => {
+
 
       getReview(this.state.user_token)
         .then((response) => {
-          console.log(response)
           this.setState({
-            reviews: response.data.reviews
+            reviews: response.data.request
           })
         })
         .catch((error) => {
           console.log(error)
         })
+
+        if(this.props.review){
+          this.setState({
+            review: this.props.review
+          })
+        }
     })
   }
 
@@ -48,6 +57,12 @@ export default class reviews extends Component {
       })
     }
 
+  }
+
+  componentWillReceiveProps(){
+    this.setState({
+      action: this.props.location.state.action
+    })
   }
 
   setReview = (action, id, review) => {
@@ -121,16 +136,16 @@ export default class reviews extends Component {
     let allReviews = <h1>You didn't make any reviews</h1>
 
     if (this.state.reviews.length > 0) {
-      allReviews = this.state.reviews.map(review => {
-        return <ReviewShow renderForm={this.renderForm} setReview={this.setReview} review={review.review} key={review.review._id} />
+      allReviews = this.state.reviews.map(request => {
+        return <ReviewShow renderForm={this.renderForm} setReview={this.setReview} showClassName={this.state.showClassName} action={this.state.action} review={request.review} key={request.review._id} />
       })
     }
     return (
-      <div className="row">
+      <div >
         {(this.state.action === 'create' || this.state.action === 'update')
           ? <ReviewInput review={this.state.review} id={this.state.id} setReview={this.setReview} />
           : (this.state.action === "show")
-          ? <ReviewShow renderForm={this.renderForm} setReview={this.setReview} review={this.state.review} key={this.state.id} /> 
+          ? <ReviewShow renderForm={this.renderForm} action={this.state.action} setReview={this.setReview} showClassName={this.state.showClassName} review={this.state.review} key={this.state.id} /> 
           :  allReviews
         }
       </div>
