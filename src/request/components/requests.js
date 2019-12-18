@@ -19,15 +19,29 @@ export default class requests extends Component {
     }
   }
 
-  componentDidMount = () => {
+
+    componentWillMount =()=>{
+       console.log(this.props)
     this.setState({
-      user_token: this.props.user.token
-    }, () => this.getAllRequests())
+      user_token: this.props.user.token,
+      action: this.props.action,
+    } )
+    }
+  componentDidMount = () => {
+   
+ this.getAllRequests()
+  }
+
+  componentWillReceiveProps(){
+    this.setState({
+      action: this.props.location.state.action
+    })
   }
 
   getAllRequests =()=> {
      getRequest(this.state.user_token)
         .then((response) => {
+          console.log(response.data)
           this.setState({
             requests: response.data.requests
           })
@@ -85,7 +99,7 @@ export default class requests extends Component {
             }); break;
 
         case "show" : 
-        console.log("show")
+        console.log("show case")
         this.setState({
           request : request,
           id: id
@@ -126,7 +140,20 @@ export default class requests extends Component {
 
     if (this.state.requests.length > 0) {
       allRequest = this.state.requests.map(request => {
-        return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} action={this.state.action} user_id={this.props.user._id} request={request} key={request._id} />
+        return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} action={this.state.action} user={this.props.user} request={request} key={request._id} />
+      })
+    }
+
+    if (allRequest.length) {
+      allRequest = allRequest.filter(show => {
+    
+        if (show.props.request.review) {
+          if (show.props.request.review.user_id === this.props.user._id || show.props.request.user_id === this.props.user._id) {
+            return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} action={this.state.action} user={this.props.user} request={show.props.request} key={show.props.request._id} />
+          }
+        } else {
+          return <RequestShow renderForm={this.renderForm} setRequest={this.setRequest} action={this.state.action} user={this.props.user} request={show.props.request} key={show.props.request._id} />
+        }
       })
     }
     console.log(this.props.user)
@@ -139,7 +166,7 @@ export default class requests extends Component {
         {(this.state.action === 'create' || this.state.action === 'update')
           ? <RequestInput request={this.state.request}  setRequest={this.setRequest} />
           : (this.state.action === "show")
-          ? <RequestShow renderForm={this.renderForm} action={this.state.action} newReview={this.newReview} setRequest={this.setRequest} user_id={this.props.user._id} request={this.state.request} key={this.state.id} /> 
+          ? <RequestShow renderForm={this.renderForm} action={this.state.action} newReview={this.newReview} setRequest={this.setRequest} user={this.props.user} request={this.state.request} key={this.state.id} /> 
           : allRequest
         }
       </div>
@@ -147,3 +174,5 @@ export default class requests extends Component {
     )
   }
 }
+
+
