@@ -9,38 +9,44 @@ export default class reviews extends Component {
       reviews: [],
       review: {
         title: '',
-        content: '', },
+        content: '',
+      },
       user_token: '',
       action: '',
       id: '',
-      showClassName:""
+      showClassName: ""
     }
   }
 
   componentDidMount = () => {
+    console.log('mount', this.props)
     this.setState({
       user_token: this.props.user.token,
       action: this.props.action,
       showClassName: this.props.showClassName
-    }, () => {
+    }, () => this.getAllReviews())
+  }
 
-
-      getReview(this.state.user_token)
-        .then((response) => {
-          this.setState({
-            reviews: response.data.request
-          })
+  getAllReviews = () => {
+    console.log('get all' , this.state.user_token)
+    getReview(this.state.user_token)
+      .then((response) => {
+        console.log('res', response.data)
+        this.setState({
+          reviews: response.data.request
         })
-        .catch((error) => {
-          console.log(error)
-        })
+      },()=>{
+        console.log('inside', this.state.reviews)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
 
-        if(this.props.review){
-          this.setState({
-            review: this.props.review
-          })
-        }
-    })
+    if (this.props.review) {
+      this.setState({
+        review: this.props.review
+      })
+    }
   }
 
   renderForm = (action, review) => {
@@ -59,14 +65,20 @@ export default class reviews extends Component {
 
   }
 
-  componentWillReceiveProps(){
+  componentWillReceiveProps() {
+    let action
+    if (this.props.location) {
+      action = this.props.location.state.action
+    } else {
+      action = ''
+
+    }
     this.setState({
-      action: this.props.location.state.action
+      action: action
     })
   }
 
   setReview = (action, id, review) => {
-    console.log(action, id)
     this.setState({
       review: review,
       action: action,
@@ -76,7 +88,6 @@ export default class reviews extends Component {
       switch (this.state.action) {
         case "create": createNewReview(this.state.user_token, this.state.review)
           .then((response) => {
-            console.log(response.data)
             this.setState({
               action: '',
               reviews: [...this.state.reviews, response.data.review]
@@ -90,13 +101,10 @@ export default class reviews extends Component {
         case "update":
           updateReviewById(this.state.user_token, id, this.state.review)
             .then((response) => {
-              console.log(response.data)
               const updateReview = this.state.reviews.map(review => {
-                console.log(review.review._id, id)
-                if (review.review._id=== id) {
-                  return {review: this.state.review}
+                if (review.review._id === id) {
+                  return { review: this.state.review }
                 } else {
-                  console.log('here',review)
                   return review
                 }
               })
@@ -106,12 +114,12 @@ export default class reviews extends Component {
               })
             }); break;
 
-        case "show" : 
-        console.log("show")
-        this.setState({
-          review : review,
-          id: id
-        }); break;
+        case "show":
+          console.log("show")
+          this.setState({
+            review: review,
+            id: id
+          }); break;
 
         case "delete": deleteReviewById(this.state.user_token, id)
           .then((response) => {
@@ -127,7 +135,9 @@ export default class reviews extends Component {
             console.log(error)
           })
           ; break;
-        default: console.log(this.state.action)
+        default: this.setState({
+          action: '',
+        })
       }
     })
   }
@@ -137,16 +147,18 @@ export default class reviews extends Component {
 
     if (this.state.reviews.length > 0) {
       allReviews = this.state.reviews.map(request => {
-        return <ReviewShow renderForm={this.renderForm} setReview={this.setReview} showClassName={this.state.showClassName} action={this.state.action} review={request.review} key={request.review._id} />
+        return <ReviewShow renderForm={this.renderForm} user={this.props.user} setReview={this.setReview} showClassName={this.state.showClassName} action={this.state.action} review={request.review} key={request.review._id} />
       })
     }
+
+
     return (
       <div >
         {(this.state.action === 'create' || this.state.action === 'update')
           ? <ReviewInput review={this.state.review} id={this.state.id} setReview={this.setReview} />
           : (this.state.action === "show")
-          ? <ReviewShow renderForm={this.renderForm} action={this.state.action} setReview={this.setReview} showClassName={this.state.showClassName} review={this.state.review} key={this.state.id} /> 
-          :  allReviews
+            ? <ReviewShow renderForm={this.renderForm} user={this.props.user} action={this.state.action} setReview={this.setReview} showClassName={this.state.showClassName} review={this.state.review} key={this.state.id} />
+            : allReviews
         }
       </div>
     )
