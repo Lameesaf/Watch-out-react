@@ -13,7 +13,7 @@ import Request from './request/components/requests'
 import Review from './review/component/review'
 
 class App extends Component {
-  constructor () {
+  constructor() {
     super()
 
     this.state = {
@@ -30,7 +30,7 @@ class App extends Component {
     this.setState({ alerts: [...this.state.alerts, { message, type }] })
   }
 
-  render () {
+  render() {
     const { alerts, user } = this.state
 
     return (
@@ -53,11 +53,11 @@ class App extends Component {
             <ChangePassword alert={this.alert} user={user} />
           )} />
 
-          <AuthenticatedRoute exact user={user} path='/' render={() => (
-            <Request user={user} />
+          <AuthenticatedRoute user={user} path='/requests' render={(props) => (
+            <Request user={user}  action ="" {...props}/>
           )} />
-           <AuthenticatedRoute user={user} path='/reviews' render={() => (
-            <Review user={user} />
+          <AuthenticatedRoute user={user} action='' path='/reviews' render={(props) => (
+            <Review user={user} action ="" {...props} showClassName="col col-xs-4 card review"/>
           )} />
         </main>
       </React.Fragment>
