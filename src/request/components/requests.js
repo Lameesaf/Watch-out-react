@@ -33,15 +33,21 @@ export default class requests extends Component {
   }
 
   componentWillReceiveProps(){
+    let action
+    if(this.props.location){
+       action = this.props.location.state.action
+    }else {
+       action = ''
+
+    }
     this.setState({
-      action: this.props.location.state.action
+      action: action
     })
   }
 
   getAllRequests =()=> {
      getRequest(this.state.user_token)
         .then((response) => {
-          console.log(response.data)
           this.setState({
             requests: response.data.requests
           })
@@ -52,7 +58,6 @@ export default class requests extends Component {
   }
 
   renderForm = (action, request) => {
-    console.log(request)
     if (action === 'update') {
       this.setState({
         action: 'update',
@@ -76,7 +81,6 @@ export default class requests extends Component {
       switch (this.state.action) {
         case "create": createNewRequest(this.state.user_token, this.state.request)
           .then((response) => {
-            console.log(response.data)
             this.setState({
               action: '',
               requests: [...this.state.requests, response.data.request]
@@ -88,10 +92,8 @@ export default class requests extends Component {
           ; break;
 
         case "update":
-          console.log(id)
           updateRequestById(this.state.user_token, id, this.state.request)
             .then((response) => {
-              console.log(response.data)
               this.getAllRequests()
               this.setState({
                 action: '',
@@ -107,7 +109,6 @@ export default class requests extends Component {
 
         case "delete": deleteRequestById(this.state.user_token, id)
           .then((response) => {
-            console.log(response.data)
             const requests = this.state.requests.filter(request => {
               return request._id !== id
             })
@@ -120,7 +121,9 @@ export default class requests extends Component {
             console.log(error)
           })
           ; break;
-        default: console.log(this.state.action)
+        default: this.setState({
+          action: '',
+        })
       }
     })
   }
@@ -156,7 +159,6 @@ export default class requests extends Component {
         }
       })
     }
-    console.log(this.props.user)
     return (
       <div >
          {(this.props.user.role.title !== "shopper")?
