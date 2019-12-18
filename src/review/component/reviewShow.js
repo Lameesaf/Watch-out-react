@@ -27,12 +27,14 @@ export default class reviewShow extends Component {
             : false}
 
         </div>
-        {this.props.action === 'show'
+        
+        {this.props.action === 'show' && this.props.user._id === this.props.review.user_id
           ? <div><button onClick={this.deleteReview}>Delete</button>
             <button onClick={this.updateReview}>Update</button></div>
           : false}
-
-        <button onClick={this.showReview}>{this.props.action === 'show' ? 'back' : 'Show'}</button>
+          { this.props.user._id === this.props.review.user_id
+        ?<button onClick={this.showReview}>{this.props.action === 'show' ? 'back' : 'Show'}</button>
+        :false}
       </div>
 
     )
