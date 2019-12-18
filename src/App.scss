@@ -37,7 +37,7 @@ $charcoal: rgba(204, 204, 204, 0.698);
   padding: 30px;
   position: fixed;
   text-align: center;
-  top: 15%;
+  top: 25%;
   width: 50%;
   z-index: 1;
   -webkit-animation-name: fadeOut;
@@ -94,8 +94,15 @@ $charcoal: rgba(204, 204, 204, 0.698);
 
 .container, .request-row {
   padding: 0;
-  margin: 30px auto;
-  justify-items: center;
+  margin: 0;
+  text-align: center;
+}
+
+.container {
+  border: 60px solid #072E44;
+  width: 100vw;
+  max-width: 99vw;
+  height: 100vw;
 }
 
 button {
@@ -104,4 +111,18 @@ button {
   border: 1px solid #072E44;
   margin: 5px;
   padding: 5px;
+}
+
+.text-area{
+  background-color: white;
+  color: #072E44;
+  display: inline;
+}
+
+.title {
+  font-size: x-large;
+}
+
+.details {
+  font-size: large;
 }
