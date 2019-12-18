@@ -22,7 +22,6 @@ export default class requestShow extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="col col-xs-4 card">
 
@@ -50,7 +49,6 @@ export default class requestShow extends Component {
         {this.props.request.review && this.props.action === 'show'
           ? <Review user={this.props.user} action="show" showClassName="review" review={this.props.request.review} />
           : false}
-        {console.log(this.props.user)}
         {(this.props.user._id !== this.props.request.user_id) ?
           (this.props.action === 'show' && !this.props.request.review)
             ? <button onClick={this.newReview}>Choose</button>
