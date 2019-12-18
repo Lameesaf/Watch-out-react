@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Review from '../../review/component/review'
 
 export default class requestShow extends Component {
 
@@ -11,7 +12,8 @@ export default class requestShow extends Component {
   }
 
   showRequest = () => {
-    this.props.setRequest('show', this.props.request._id, this.props.request)
+    const action = this.props.action === 'show' ? '' : 'show'
+    this.props.setRequest(action, this.props.request._id, this.props.request)
   }
 
 
@@ -20,15 +22,15 @@ export default class requestShow extends Component {
   }
 
   render() {
-    console.log(this.props.request.review)
+    console.log(this.props)
     return (
       <div className="col col-xs-4 card">
 
 
-        <div onClick={this.showRequest}>
-          <h2>{this.props.request.shop_name}</h2>
-          <h3>{this.props.request.shift}</h3>
-          <h3 className="col">{this.props.request.days.map(day => {
+        <div>
+          <h2 className='title'><strong>Shop Name: </strong><p className='text-area'>{this.props.request.shop_name}</p></h2>
+          <h3 className='details'>At The <p className='text-area'>{this.props.request.shift}</p> Shift</h3>
+          <h3 className="col details"> On: <p className='text-area'>{this.props.request.days.map(day => {
             switch (day) {
               case 'sun': return 'Sunday '
               case 'mon': return 'Monday '
@@ -39,21 +41,23 @@ export default class requestShow extends Component {
               case 'sat': return 'Saturday '
               default: return "wrong"
             }
-          })}</h3>
-          <div>Details: {this.props.request.details}</div>
+          })}</p></h3>
+          {this.props.action === 'show'
+            ? <p className='details'> <strong>Request Details:</strong> <p className='text-area'>{this.props.request.details}</p></p>
+            : false}
         </div>
-        {console.log(this.props)}
-        {console.log(';lkjhgfdsdfghjkl', this.props.user_id, this.props.request.user_id)}
-        {console.log('cvbnm, ', this.props.user_id !== this.props.request.user_id)}
-        {(this.props.user_id !== this.props.request.user_id) ?
+
+        {this.props.request.review && this.props.action === 'show'
+          ? <Review user={this.props.user} action="show" showClassName="review" review={this.props.request.review} />
+          : false}
+        {console.log(this.props.user)}
+        {(this.props.user._id !== this.props.request.user_id) ?
           (this.props.action === 'show' && !this.props.request.review)
             ? <button onClick={this.newReview}>Choose</button>
             : false
           : <div> <button onClick={this.deleteRequest}>Delete</button>
             <button onClick={this.updateRequest}>Update</button> </div>}
-
-
-
+        <button onClick={this.showRequest}>{this.props.action === 'show' ? 'back' : 'Show'}</button>
 
       </div>
     )
