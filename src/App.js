@@ -15,16 +15,24 @@ import Review from './review/component/review'
 class App extends Component {
   constructor() {
     super()
-
+    let localUser = null;
+    if(localStorage.getItem('user')){
+      localUser = JSON.parse(localStorage.getItem('user'));}
     this.state = {
-      user: null,
+      user: localUser,
       alerts: []
     }
   }
 
-  setUser = user => this.setState({ user })
+  setUser = user => {
+    localStorage.setItem('user', JSON.stringify(user))
+    this.setState({ user });
+  }
 
-  clearUser = () => this.setState({ user: null })
+  clearUser = () =>{
+    localStorage.clear()
+    this.setState({ user: null });
+   }
 
   alert = (message, type) => {
     this.setState({ alerts: [...this.state.alerts, { message, type }] })
