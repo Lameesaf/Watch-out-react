@@ -8,8 +8,13 @@ const authenticatedOptions = (title) =>{
   <React.Fragment>
     {/* <Link to="/change-password">Change Password</Link> */}
     <Link to="/sign-out">Sign Out</Link> 
-    {/* <Link to="/requests">requests</Link> */}
-    {(title === 'manger')? false :<Link to="/reviews">reviews</Link>}
+    <Link to={{
+      pathname: "/requests",
+      state: { action: ''}
+    }}>requests</Link>
+    {(title === 'manger')? false :<Link to={{
+      pathname:"/reviews",
+      state: { action: ''}}}>reviews</Link>}
     
   </React.Fragment>
   )
