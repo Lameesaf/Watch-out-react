@@ -13,7 +13,7 @@ class SignUp extends Component {
       email: '',
       password: '',
       passwordConfirmation: '',
-      role: "5df1f406046b95e86554f080",
+      role: "shopper",
       checked: false
     }
   }
@@ -34,7 +34,7 @@ class SignUp extends Component {
       .then(() => history.push('/'))
       .catch(error => {
         console.error(error)
-        this.setState({ email: '', password: '', passwordConfirmation: '', name: '', role: "5df1f406046b95e86554f080" })
+        this.setState({ email: '', password: '', passwordConfirmation: '', name: '', role: "shopper" })
         alert(messages.signUpFailure, 'danger')
       })
   }
@@ -92,8 +92,8 @@ class SignUp extends Component {
           onChange={this.handleChange}
         />
         <label htmlFor="role">What are you?</label>
-        <label><input type="radio" value= "5df1f4bc046b95e86554f081" checked={checked} name="manger" onClick={this.roleChangeHandle}/> Manger</label>
-        <label><input type="radio" value= "5df1f406046b95e86554f080"  checked={!checked} name="shopper" onClick={this.roleChangeHandle}/> Shopper</label>
+        <label><input type="radio" value= "manger" checked={checked} name="manger" onClick={this.roleChangeHandle}/> Manger</label>
+        <label><input type="radio" value= "shopper"  checked={!checked} name="shopper" onClick={this.roleChangeHandle}/> Shopper</label>
         
         
 
