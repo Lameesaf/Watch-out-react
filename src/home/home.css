@@ -1,0 +1,34 @@
+.main-home {
+  align-items: center;
+  padding: 0 20px;
+  margin: 50px;
+}
+
+h1,h3{
+  color: #235f80;
+}
+
+.p{
+  display: flex;
+  flex-direction: column;
+justify-content: center;
+  color:#339cb5;
+  font-size: larger;
+  font-weight: 800;
+}
+
+.home{
+display: flex;
+flex-direction: row;
+}
+
+@media (max-width: 600px) {
+  .main-footer {
+    font-size: 0.7em;
+    height: auto;
+    padding: 10px;    
+  }
+
+}
+
+

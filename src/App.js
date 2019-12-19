@@ -11,6 +11,8 @@ import ChangePassword from './auth/components/ChangePassword'
 import AlertDismissible from './auth/components/AlertDismissible'
 import Request from './request/components/requests'
 import Review from './review/component/review'
+import  Footer  from './footer/Footer'
+import Home from './home/Home'
 
 class App extends Component {
   constructor() {
@@ -54,6 +56,9 @@ class App extends Component {
           <Route path='/sign-in' render={() => (
             <SignIn alert={this.alert} setUser={this.setUser} />
           )} />
+          <Route exact path='/' render={() => (
+            <Home  />
+          )} />
           <AuthenticatedRoute user={user} path='/sign-out' render={() => (
             <SignOut alert={this.alert} clearUser={this.clearUser} user={user} />
           )} />
@@ -68,6 +73,7 @@ class App extends Component {
             <Review user={user} action ="" {...props} showClassName="col col-xs-4 card review"/>
           )} />
         </main>
+        <Footer />
       </React.Fragment>
     )
   }
