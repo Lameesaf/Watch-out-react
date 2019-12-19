@@ -34,7 +34,7 @@ const alwaysOptions = (
 
 const Header = ({ user }) => (
   <header className="main-header">
-    <h1>Untitled Project</h1>
+    <h1>Watch Out</h1>
     <nav>
       { user && <span>Welcome, {user.name}</span>}
       { user ? authenticatedOptions(user.role.title) : unauthenticatedOptions }
