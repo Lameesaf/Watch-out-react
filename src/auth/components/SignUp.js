@@ -92,8 +92,13 @@ class SignUp extends Component {
           onChange={this.handleChange}
         />
         <label htmlFor="role">What are you?</label>
-        <label><input type="radio" value= "manger" checked={checked} name="manger" onClick={this.roleChangeHandle}/> Manger</label>
-        <label><input type="radio" value= "shopper"  checked={!checked} name="shopper" onClick={this.roleChangeHandle}/> Shopper</label>
+        <ul className={"list-inline"}>
+            <li>
+            <label><input type="radio" value= "manger" checked={checked} name="manger" onClick={this.roleChangeHandle}/> Manger</label>
+            </li>
+            <li>
+            <label><input type="radio" value= "shopper"  checked={!checked} name="shopper" onClick={this.roleChangeHandle}/> Shopper</label>
+            </li></ul>
         
         
 
